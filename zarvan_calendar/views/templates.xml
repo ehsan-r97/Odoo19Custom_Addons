@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="Zarvan Calendar Assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- JS Logic -->
+            <script type="text/javascript" src="/zarvan_calendar/static/src/js/date_utils.js"/>
+            <script type="text/javascript" src="/zarvan_calendar/static/src/js/field_patches.js"/>
+            <script type="text/javascript" src="/zarvan_calendar/static/src/js/filter_patches.js"/>
+            
+            <!-- OWL Components -->
+            <script type="text/javascript" src="/zarvan_calendar/static/src/components/jalali_datepicker/jalali_datepicker.js"/>
+        </xpath>
+    </template>
+</odoo>
