@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- User Preferences Form View Extension -->
+    <record id="view_users_form_jalaali" model="ir.ui.view">
+        <field name="name">res.users.form.jalaali</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='preferences']" position="inside">
+                <group string="Jalali Calendar Settings">
+                    <field name="use_jalali_calendar"/>
+                    <field name="jalali_show_holidays"/>
+                    <field name="jalali_week_start"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

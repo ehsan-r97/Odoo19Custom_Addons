@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import Wizard Form View -->
+    <record id="import_jalali_wizard_view_form" model="ir.ui.view">
+        <field name="name">jalaali.import.wizard.form</field>
+        <field name="model">jalaali.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Jalali Dates">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Import CSV/Excel with Jalali Dates</h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="file" filename="filename"/>
+                            <field name="filename" invisible="1"/>
+                            <field name="model_id"/>
+                            <field name="date_field"/>
+                            <field name="has_header"/>
+                        </group>
+                        <group>
+                            <field name="total_rows"/>
+                            <field name="valid_rows"/>
+                            <field name="invalid_rows"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Preview" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <field name="preview_data" readonly="1" colspan="2"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <footer>
+                    <button string="Preview" 
+                            type="object" 
+                            name="action_preview" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="Import" 
+                            type="object" 
+                            name="action_import" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'preview')]}"/>
+                    <button string="Reset" 
+                            type="object" 
+                            name="action_reset" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                    <button string="Close" 
+                            special="cancel" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Import Wizard Action -->
+    <record id="action_import_jalali_wizard" model="ir.actions.act_window">
+        <field name="name">Import Jalali Dates</field>
+        <field name="res_model">jalaali.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item under Settings -->
+    <menuitem id="menu_jalaali_import"
+              name="Import Jalali Dates"
+              parent="base.menu_administration"
+              action="action_import_jalali_wizard"
+              sequence="50"/>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Holiday Tree View -->
+    <record id="view_jalaali_holiday_tree" model="ir.ui.view">
+        <field name="name">jalaali.holiday.tree</field>
+        <field name="model">jalaali.holiday</field>
+        <field name="arch" type="xml">
+            <tree string="Persian Holidays">
+                <field name="name"/>
+                <field name="month"/>
+                <field name="day"/>
+                <field name="type"/>
+                <field name="is_national"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Holiday Form View -->
+    <record id="view_jalaali_holiday_form" model="ir.ui.view">
+        <field name="name">jalaali.holiday.form</field>
+        <field name="model">jalaali.holiday</field>
+        <field name="arch" type="xml">
+            <form string="Persian Holiday">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="is_national"/>
+                        </group>
+                        <group>
+                            <field name="month"/>
+                            <field name="day"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Holiday Action -->
+    <record id="action_jalaali_holiday" model="ir.actions.act_window">
+        <field name="name">Persian Holidays</field>
+        <field name="res_model">jalaali.holiday</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Persian holiday
+            </p>
+            <p>
+                Manage fixed and lunar holidays for the Jalali calendar.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_jalaali_holiday"
+              name="Holidays"
+              parent="base.menu_localization"
+              action="action_jalaali_holiday"
+              sequence="20"/>
+</odoo>

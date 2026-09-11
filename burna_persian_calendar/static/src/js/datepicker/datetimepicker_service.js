@@ -73,19 +73,39 @@ function convertCalendarString(value, convertFn) {
 }
 
 function isJalaliLocale() {
-    return localization.code === "fa_IR" && typeof farvardin !== "undefined";
+    return localization.code === "fa_IR" && typeof JDate !== "undefined";
 }
 
 function toJalaliDisplay(value) {
-    return isJalaliLocale()
-        ? convertCalendarString(value, farvardin.gregorianToSolar.bind(farvardin))
-        : value;
+    if (!isJalaliLocale()) {
+        return value;
+    }
+    try {
+        // Use JDate from utils.js instead of farvardin
+        return convertCalendarString(value, (gy, gm, gd) => {
+            const jDate = JDate.Utils.toJalali(new Date(gy, gm - 1, gd));
+            return [jDate.year, jDate.month, jDate.date];
+        });
+    } catch (error) {
+        console.warn("Jalali conversion error:", error);
+        return value;
+    }
 }
 
 function toGregorianParse(value) {
-    return isJalaliLocale()
-        ? convertCalendarString(value, farvardin.solarToGregorian.bind(farvardin))
-        : value;
+    if (!isJalaliLocale()) {
+        return value;
+    }
+    try {
+        // Use JDate from utils.js instead of farvardin
+        return convertCalendarString(value, (jy, jm, jd) => {
+            const gDate = JDate.Utils.toGregorian(jy, jm, jd);
+            return [gDate.year, gDate.month, gDate.date];
+        });
+    } catch (error) {
+        console.warn("Gregorian conversion error:", error);
+        return value;
+    }
 }
 
 const FOCUS_CLASSNAME = "text-primary";

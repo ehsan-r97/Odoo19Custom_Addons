@@ -161,17 +161,24 @@ function bindInputConverters(root = document) {
             return;
         }
 
+        // Store original value on focus to detect actual changes
         input.addEventListener("focus", () => {
+            input._originalValue = input.value;
             convertInputToShamsi(input);
         });
 
-        // Odoo reads normalized Gregorian values when onchange/blur is fired.
+        // Only convert back to Gregorian if the value actually changed
         input.addEventListener("change", () => {
-            convertInputToGregorian(input);
+            if (input._originalValue !== input.value) {
+                convertInputToGregorian(input);
+            }
         });
 
         input.addEventListener("blur", () => {
-            convertInputToGregorian(input);
+            if (input._originalValue !== input.value) {
+                convertInputToGregorian(input);
+            }
+            delete input._originalValue;
         });
 
         input.dataset.shamsiBound = "1";
@@ -182,9 +189,14 @@ function bootstrapShamsiCalendar() {
     decorateNode(document.body);
     bindInputConverters(document);
 
+    // Limit observer scope to calendar containers only for better performance
+    const calendarContainers = document.querySelectorAll(CALENDAR_ROOT_SELECTORS.join(","));
+    
     const observer = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
-            mutation.addedNodes.forEach((n) => decorateNode(n));
+            if (mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach((n) => decorateNode(n));
+            }
             if (mutation.type === "attributes" && mutation.target instanceof HTMLElement) {
                 decorateNode(mutation.target);
             }
@@ -192,12 +204,24 @@ function bootstrapShamsiCalendar() {
         bindInputConverters(document);
     });
 
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["data-date", "value"],
-    });
+    if (calendarContainers.length > 0) {
+        calendarContainers.forEach((container) => {
+            observer.observe(container, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ["data-date", "value"],
+            });
+        });
+    } else {
+        // Fallback to body observation if no calendar containers found yet
+        observer.observe(document.body, {
+            childList: true,
+            subtree: false, // Performance: don't observe entire subtree
+            attributes: true,
+            attributeFilter: ["data-date", "value"],
+        });
+    }
 }
 
 if (document.readyState === "loading") {
