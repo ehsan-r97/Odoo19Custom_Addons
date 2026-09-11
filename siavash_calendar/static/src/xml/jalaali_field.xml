@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="jalaali_pro_templates" xml:space="preserve">
+
+    <t t-name="jalaali_pro.JalaaliField">
+        <div class="jalaali-field-container" t-att-class="classes">
+            <input 
+                type="text"
+                class="form-control jalaali-input"
+                t-att-value="state.value"
+                t-att-placeholder="placeholder"
+                t-att-readonly="props.readonly"
+                t-att-required="props.required"
+                t-on-input="onInput"
+                t-on-blur="onBlur"
+                t-on-focus="onFocus"
+                aria-label="Date input (Jalali or Gregorian)"
+                aria-invalid="state.isInvalid"
+                aria-describedby="jalaali-error-msg"
+            />
+            <div 
+                t-if="state.isInvalid" 
+                id="jalaali-error-msg"
+                class="invalid-feedback d-block"
+                role="alert"
+            >
+                <i class="fa fa-exclamation-triangle"/> 
+                <t t-esc="state.errorMessage"/>
+            </div>
+            <div 
+                t-if="!state.isInvalid and jalaali.isJalaliEnabled()" 
+                class="jalaali-hint text-muted small"
+            >
+                <small>شمسی وارد کنید یا میلادی</small>
+            </div>
+        </div>
+    </t>
+
+</templates>

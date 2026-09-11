@@ -107,11 +107,30 @@ function pad(v) {
 }
 
 export function isJalaliDateString(value) {
-    return /^\d{4}[-/]\d{1,2}[-/]\d{1,2}$/.test((value || "").trim());
+    const trimmed = (value || "").trim();
+    if (!/^\d{4}[-/]\d{1,2}[-/]\d{1,2}$/.test(trimmed)) {
+        return false;
+    }
+    const normalized = trimmed.replace(/\//g, "-");
+    const [y, m, d] = normalized.split("-").map((x) => parseInt(x, 10));
+    // Basic validation: year should be reasonable (1300-1500), month 1-12, day 1-31
+    if (y < 1300 || y > 1500 || m < 1 || m > 12 || d < 1 || d > 31) {
+        return false;
+    }
+    return true;
 }
 
 export function isGregorianIsoDate(value) {
-    return /^\d{4}-\d{2}-\d{2}$/.test((value || "").trim());
+    const trimmed = (value || "").trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+        return false;
+    }
+    const [y, m, d] = trimmed.split("-").map((x) => parseInt(x, 10));
+    // Basic validation: year should be reasonable (1900-2100), month 1-12, day 1-31
+    if (y < 1900 || y > 2100 || m < 1 || m > 12 || d < 1 || d > 31) {
+        return false;
+    }
+    return true;
 }
 
 export function gregorianToJalali(gy, gm, gd) {

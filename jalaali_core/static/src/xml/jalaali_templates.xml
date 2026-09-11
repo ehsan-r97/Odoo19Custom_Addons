@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="jalaali_templates" xml:space="preserve">
+
+    <t t-name="jalaali_core.JalaaliField">
+        <div class="jalaali-field-container">
+            <input 
+                type="text" 
+                class="form-control" 
+                t-att-value="widget.jalaliValue"
+                t-on-change="(ev) => widget.onChange(ev)"
+                placeholder="YYYY-MM-DD (Jalali)"
+            />
+        </div>
+    </t>
+
+</templates>
